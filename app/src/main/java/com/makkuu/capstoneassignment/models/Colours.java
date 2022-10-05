@@ -15,6 +15,19 @@ public class Colours
 
     static Color getColor(String name)
     {
+        return colours.get(name);
+    }
 
+    /**
+     * Code to initialise list of colours
+     */
+    static public void setColours()
+    {
+        colours.put("Orange", Color.argb(255,255,165,0));
+        colours.put()
+        colours.put()
+        colours.put()
+        colours.put()
+        colours.put()
     }
 }
