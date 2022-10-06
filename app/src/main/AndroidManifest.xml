@@ -8,6 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CapstoneAssignment" />
+        android:theme="@style/Theme.CapstoneAssignment">
+        <activity
+            android:name=".controllers.Game"
+            android:exported="false" />
+    </application>
 
 </manifest>

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">CapstoneAssignment</string>
+    <string name="quitConfirm">Are you sure you wish to quit the game?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

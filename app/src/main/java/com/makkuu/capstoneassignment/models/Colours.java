@@ -3,10 +3,11 @@ package com.makkuu.capstoneassignment.models;
 import android.graphics.Color;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Colours
 {
-    static HashMap<String,Color> colours;
+    static Map<String,Color> colours;
 
     public Colours getInstance()
     {
@@ -18,16 +19,5 @@ public class Colours
         return colours.get(name);
     }
 
-    /**
-     * Code to initialise list of colours
-     */
-    static public void setColours()
-    {
-        colours.put("Orange", Color.argb(255,255,165,0));
-        colours.put()
-        colours.put()
-        colours.put()
-        colours.put()
-        colours.put()
-    }
+
 }
