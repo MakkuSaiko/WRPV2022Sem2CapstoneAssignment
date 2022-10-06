@@ -3,4 +3,5 @@
     <string name="quitConfirm">Are you sure you wish to quit the game?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="curPlayer">Current Player: %s</string>
 </resources>

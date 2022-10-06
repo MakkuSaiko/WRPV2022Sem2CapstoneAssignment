@@ -15,4 +15,8 @@ public class Player {
     {
         score+=addAmt;
     }
+
+    public Tile[] getTiles() {
+        return tiles;
+    }
 }

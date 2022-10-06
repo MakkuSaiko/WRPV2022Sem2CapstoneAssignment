@@ -11,19 +11,30 @@ import com.makkuu.capstoneassignment.models.Bag;
 import com.makkuu.capstoneassignment.models.Board;
 import com.makkuu.capstoneassignment.models.Player;
 import com.makkuu.capstoneassignment.R;
+import com.makkuu.capstoneassignment.models.Tile;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class Game extends AppCompatActivity {
 
+
+    Property<Player> curPlayer;
+    List<Player> players;
+    Property<Integer> playerNr;
+    Property<Integer> turnNr;
+    Bag bag;
+    Board board;
+    AlertDialog exitConfirm;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-
 
         players = new ArrayList<>();
         Intent intent = getIntent();
@@ -41,14 +52,6 @@ public class Game extends AppCompatActivity {
         setUpGame();
     }
 
-
-    Property<Player> curPlayer;
-    List<Player> players;
-    Property<Integer> playerNr;
-    Property<Integer> turnNr;
-    Bag bag;
-    Board board;
-    AlertDialog exitConfirm;
 
     public void setUpGame() {
         //Initialize attributes
@@ -76,15 +79,26 @@ public class Game extends AppCompatActivity {
         turnNr.addListener((property, oldValue, newValue) -> playerNr.set(playerNr.get()+1));
     }
 
-    public void move_SwapPieces()
-    {
-        //TODO: find a way to do UI things
 
-
-    }
     public void move_endTurn()
     {
         turnNr.set(turnNr.get()+1);
+    }
+
+    public void move_tradeTiles(int[] removedIndex)
+    {
+        //TODO: Get selected tiles
+
+        List<Tile> removed = new ArrayList<Tile>();
+        Tile[] heldTiles = curPlayer.get().getTiles();
+        for (int index:
+             removedIndex) {
+            removed.add(heldTiles[index]);
+            heldTiles[index] = bag.getNextTile();
+        }
+        bag.returnTiles(removed);
+        move_endTurn();
+
     }
 
 
