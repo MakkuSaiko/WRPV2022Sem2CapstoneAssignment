@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1000">
+<g transform="translate(-25,-25) scale(1.05 1.05)">
+   <circle cx="225" cy="500" r="200"  fill="black" />
+   <circle cx="500" cy="225" r="200"  fill="black" />
+   <circle cx="775" cy="500" r="200"  fill="black" />
+   <circle cx="500" cy="775" r="200"  fill="black" />
+   <circle cx="500" cy="500" r="200"  fill="black" />
+</g>
+</svg> 
