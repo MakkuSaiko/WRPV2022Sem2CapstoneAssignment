@@ -6,9 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.caverock.androidsvg.SVG;
 import com.makkuu.capstoneassignment.Property;
 import com.makkuu.capstoneassignment.models.Bag;
 import com.makkuu.capstoneassignment.models.Board;
+import com.makkuu.capstoneassignment.models.Colours;
 import com.makkuu.capstoneassignment.models.Player;
 import com.makkuu.capstoneassignment.R;
 import com.makkuu.capstoneassignment.models.Tile;
@@ -36,6 +38,9 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        //Set up the initial colours
+        Colours colours = Colours.getInstance(this);
+
         players = new ArrayList<>();
         Intent intent = getIntent();
         if(intent!=null)
@@ -57,7 +62,7 @@ public class Game extends AppCompatActivity {
         //Initialize attributes
         curPlayer.reset(players.get(0));
 
-        bag = new Bag();
+        bag = new Bag(this);
         board = new Board();
 
         setPropertyListeners();
@@ -113,7 +118,6 @@ public class Game extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         exitConfirm.show();
     }
 }

@@ -1,19 +1,32 @@
 package com.makkuu.capstoneassignment.models;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Bag {
     List<Tile> bag;
+    Context context;
 
-    public Bag() {
+    public Bag(Context context) {
+        this.context = context;
         bag = new ArrayList<>();
     }
 
     private void populateBag()
     {
-
+        if(bag.size()>0) bag.clear();
+        Tile.Shape[] shapes = Tile.Shape.values();
+        Tile.Colour[] colours = Tile.Colour.values();
+        for (Tile.Shape shape:shapes) {
+            for (Tile.Colour color: colours) {
+                bag.add(new Tile(context,color,shape));
+                bag.add(new Tile(context,color,shape));
+                bag.add(new Tile(context,color,shape));
+            }
+        }
     }
     public Tile getNextTile()
     {

@@ -1,6 +1,12 @@
 package com.makkuu.capstoneassignment.models;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.makkuu.capstoneassignment.R;
 
@@ -11,34 +17,41 @@ import java.util.Map;
 public class Colours
 {
 
-    static Map<String,Color> colours;
+    static Map<Tile.Colour,Integer> colours;
 
-    public Colours getInstance()
+    private Colours()
     {
-        initialize();
-        return this;
+
     }
 
-    private static void initialize()
+    public static Colours getInstance(Context context)
+    {
+        Colours colours = new Colours();
+        initialize(context);
+        return colours;
+    }
+
+    private static void initialize(Context context)
     {
         if(colours == null)
             colours = new HashMap<>();
-    }
-
-    public static void populateColours(Color red, Color blue, Color green, Color orange, Color purple, Color yellow)
-    {
-        colours.put("red",red);
-        colours.put("blue",blue);
-        colours.put("green",green);
-        colours.put("orange",orange);
-        colours.put("purple",purple);
-        colours.put("yellow", yellow);
+        populateColours(context);
 
     }
 
-    public static Color getColor(String name)
+    public static void populateColours(Context context)
     {
-        name = name.toLowerCase(Locale.ROOT);
+        colours.put(Tile.Colour.RED,context.getColor(R.color.RED));
+        colours.put(Tile.Colour.BLUE,context.getColor(R.color.BLUE));
+        colours.put(Tile.Colour.GREEN,context.getColor(R.color.GREEN));
+        colours.put(Tile.Colour.ORANGE,context.getColor(R.color.ORANGE));
+        colours.put(Tile.Colour.PURPLE,context.getColor(R.color.PURPLE));
+        colours.put(Tile.Colour.YELLOW, context.getColor(R.color.YELLOW));
+
+    }
+
+    public static int getColor(Tile.Colour name)
+    {
         return colours.get(name);
     }
 
