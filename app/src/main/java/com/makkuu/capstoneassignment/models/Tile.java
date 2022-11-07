@@ -17,6 +17,7 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
 
     public enum Colour { PURPLE, BLUE, GREEN, YELLOW, ORANGE, RED}
     public enum Shape {CLUB, STAR, SQUARE, DIAMOND, CROSS, CIRCLE}
+    public enum Direction {ROW,COLUMN}
 
     //TODO: Implement Tile view
 
@@ -48,5 +49,15 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
         int resourceID = getResources().getIdentifier(resourceName,"color", getContext().getPackageName());
         setColorFilter(getResources().getColor(resourceID,null));
 //        setBackground(getDrawable());
+    }
+
+    public boolean colourEquals(Tile tile)
+    {
+        return this.colour.equals(tile.colour);
+    }
+
+    public boolean shapeEquals(Tile tile)
+    {
+        return this.shape.equals(tile.shape);
     }
 }

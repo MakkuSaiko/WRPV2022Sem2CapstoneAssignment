@@ -32,6 +32,8 @@ public class Game extends AppCompatActivity {
     Board board;
     AlertDialog exitConfirm;
 
+    //integer for keeping track of edge of board for adjusting UI
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,8 @@ public class Game extends AppCompatActivity {
         move_endTurn();
 
     }
+
+
 
 
     public void initializeExitMessage()
