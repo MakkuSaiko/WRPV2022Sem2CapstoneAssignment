@@ -16,7 +16,7 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
     Shape shape;
 
     public enum Colour { PURPLE, BLUE, GREEN, YELLOW, ORANGE, RED}
-    public enum Shape {CLUB, STAR, SQUARE, DIAMOND, CROSS, CIRCLE}
+    public enum Shape {club, star, square, diamond, cross, circle}
     public enum Direction {ROW,COLUMN}
 
     //TODO: Implement Tile view
@@ -33,11 +33,12 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
         setShape();
         setColour();
 
+
     }
 
     private void setShape()
     {
-        String resourceName = "R.drawable.ic" + colour.toString();
+        String resourceName = "R.drawable.ic_" + shape.toString();
         int resourceID = getResources().getIdentifier(resourceName,"drawable",getContext().getPackageName());
         setImageDrawable(getResources().getDrawable(resourceID,null));
 

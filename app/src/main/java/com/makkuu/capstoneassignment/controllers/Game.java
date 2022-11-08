@@ -90,6 +90,7 @@ public class Game extends AppCompatActivity {
     public void move_endTurn()
     {
         turnNr.set(turnNr.get()+1);
+        board.commit();
     }
 
     public void move_tradeTiles(int[] removedIndex)
@@ -104,8 +105,13 @@ public class Game extends AppCompatActivity {
             heldTiles[index] = bag.getNextTile();
         }
         bag.returnTiles(removed);
+        board.revertAll();//do not set any moves as valid when trading tiles
         move_endTurn();
 
+    }
+    public void move_undo()
+    {
+        board.revertOne();
     }
 
 
@@ -123,5 +129,10 @@ public class Game extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         exitConfirm.show();
+    }
+
+    public void move_placeTile(Board.Coordinate coordinate, Tile tile)
+    {
+        board.doMove(coordinate,tile);
     }
 }

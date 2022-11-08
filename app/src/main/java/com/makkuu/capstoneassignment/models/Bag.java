@@ -13,7 +13,14 @@ public class Bag {
     public Bag(Context context) {
         this.context = context;
         bag = new ArrayList<>();
-    }
+        //fill the bag with tiles and shuffle it
+        populateBag();
+        for (int i = 0; i < 10; i++) {
+            shuffle();
+        }
+
+
+}
 
     private void populateBag()
     {

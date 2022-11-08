@@ -121,6 +121,9 @@ public class Board {
             placeable = tile.colourEquals(down) || tile.shapeEquals(down);
         }
 
+        List<Map.Entry<Coordinate,Tile>> row = getConnectedTiles(coord.x, coord.y,Tile.Direction.ROW);
+
+
         if(placeable)
         {
             //create a new tile entry to store placing tiles
@@ -130,6 +133,25 @@ public class Board {
         }
 
         return placeable;
+    }
+
+    public void commit()
+    {
+        inputs.clear();
+    }
+
+    public void revertOne()
+    {
+        Coordinate coord = inputs.removeLast();
+        board.replace(coord,null);
+    }
+
+    public void revertAll()
+    {
+        while(inputs.size()>0)
+        {
+            revertOne();
+        }
     }
 
 }
