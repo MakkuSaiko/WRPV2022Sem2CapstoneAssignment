@@ -2,8 +2,11 @@ package com.makkuu.capstoneassignment.models;
 
 import androidx.annotation.Nullable;
 
+import com.makkuu.capstoneassignment.Property;
+
 import java.util.AbstractMap;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
@@ -59,23 +62,57 @@ public class Board {
         board.put(coord,tile);
     }
 
-    public List<Map.Entry<Coordinate,Tile>> getConnectedTiles(int row, int col, Tile.Direction direction)
+    public List<Map.Entry<Coordinate,Tile>> getConnectedTiles (int col, int row, Tile.Direction direction)
     {
-        List<Map.Entry<Coordinate,Tile>> output = null;
+        List<Map.Entry<Coordinate,Tile>> output = new ArrayList<>();
+
         if(direction == Tile.Direction.ROW)
-        {
-           output = board.entrySet().stream()
-                    .filter(entry -> entry.getKey().x==row)     //Filter to get the row of tiles
-                    .filter(entry -> entry.getKey().y<=col+6 && entry.getKey().y>=col-6) //only get tiles up to 6 away (max size of a line)
-                    .collect(Collectors.toList());
+        { int loopVar = col + 1;
+           Coordinate curCoord = new Coordinate(loopVar,row);
+           Tile curTile = board.getOrDefault(curCoord,null);
+           while(curTile!=null)
+           {
+               output.add(new AbstractMap.SimpleEntry<>(curCoord, curTile));
+               loopVar += 1;
+               curCoord = new Coordinate(loopVar,row);
+               curTile=board.getOrDefault(curCoord,null);
+           }
+
+           loopVar = col-1;
+           curCoord = new Coordinate(loopVar,row);
+           curTile = board.getOrDefault(curCoord,null);
+           while(curTile!=null)
+           {
+               output.add(new AbstractMap.SimpleEntry<>(curCoord, curTile));
+               loopVar -= 1;
+               curCoord = new Coordinate(loopVar,row);
+               curTile=board.getOrDefault(curCoord,null);
+           }
         }
 
         if(direction == Tile.Direction.COLUMN)
         {
-            output = board.entrySet().stream()
-                    .filter(entry-> entry.getKey().y==col)  //filter to get column of tiles
-                    .filter(entry -> entry.getKey().x <=col+6 &&entry.getKey().y>=col-6)    //Only get tiles up to 6 away
-                    .collect(Collectors.toList());
+            int loopVar = row + 1;
+            Coordinate curCoord = new Coordinate(col,loopVar);
+            Tile curTile = board.getOrDefault(curCoord,null);
+            while(curTile!=null)
+            {
+                output.add(new AbstractMap.SimpleEntry<>(curCoord, curTile));
+                loopVar += 1;
+                curCoord = new Coordinate(col,loopVar);
+                curTile=board.getOrDefault(curCoord,null);
+            }
+
+            loopVar = row - 1;
+            curCoord = new Coordinate(col,loopVar);
+            curTile = board.getOrDefault(curCoord,null);
+            while(curTile!=null)
+            {
+                output.add(new AbstractMap.SimpleEntry<>(curCoord, curTile));
+                loopVar -= 1;
+                curCoord = new Coordinate(col,loopVar);
+                curTile=board.getOrDefault(curCoord,null);
+            }
         }
         return output;
     }
@@ -94,6 +131,7 @@ public class Board {
 
         if(board.containsKey(coord)) return false; //cannot put a tile where another tile exists
         boolean placeable = true;
+
 
         //check if board allows player to place there
         Tile right =  board.getOrDefault(new Coordinate(coord.x+1, coord.y),null);
@@ -121,8 +159,34 @@ public class Board {
             placeable = tile.colourEquals(down) || tile.shapeEquals(down);
         }
 
-        List<Map.Entry<Coordinate,Tile>> row = getConnectedTiles(coord.x, coord.y,Tile.Direction.ROW);
+        //Check if row is full
+        List<Map.Entry<Coordinate, Tile>> row = getConnectedTiles(coord.x, coord.y, Tile.Direction.ROW);
 
+        placeable = row.size()>=6;
+
+        //check if col is full
+        List<Map.Entry<Coordinate, Tile>> col = getConnectedTiles(coord.x, coord.y, Tile.Direction.COLUMN);
+
+        placeable = col.size()>=6;
+
+        //check if each row and col is a shape line or a colour line
+        if(row.get(0).getValue().shapeEquals(row.get(1).getValue()))
+        {
+            placeable = tile.shapeEquals(row.get(0).getValue());
+        }
+        else
+        {
+            placeable = tile.colourEquals(row.get(0).getValue());
+        }
+
+        if(col.get(0).getValue().shape.equals(col.get(1).getValue().shape))
+        {
+            placeable = tile.shapeEquals(col.get(0).getValue());
+        }
+        else
+        {
+            placeable = tile.colourEquals(col.get(0).getValue());
+        }
 
         if(placeable)
         {

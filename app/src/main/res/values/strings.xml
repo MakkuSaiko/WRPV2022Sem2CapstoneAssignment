@@ -4,4 +4,18 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="curPlayer">Current Player: %s</string>
+    <string name="revert">Revert</string>
+    <string name="trade">Trade</string>
+    <string name="commit">Commit</string>
+    <string name="invalidMove">Invalid Move, please try another move</string>
+    <string name="twoPlayers">2 Players</string>
+    <string name="threePlayers">3 Players</string>
+    <string name="fourPlayers">4 Players</string>
+    <string name="nrPlayers">Select nr of Players</string>
+    <string name="enterPlayerNames">Enter Player Names:</string>
+    <string name="hintPlayer1">Player 1</string>
+    <string name="hintPlayer2">Player 2</string>
+    <string name="hintPlayer3">Player 3</string>
+    <string name="hintPlayer4">Player 4</string>
+    <string name="start">Play</string>
 </resources>

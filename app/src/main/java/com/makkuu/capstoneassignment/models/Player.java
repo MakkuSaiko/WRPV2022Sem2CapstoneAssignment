@@ -1,14 +1,17 @@
 package com.makkuu.capstoneassignment.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Player {
     String name;
     int score;
-    Tile[] tiles;
+    List<Tile> tiles;
 
     public Player(String name) {
         this.name = name;
         score = 0;
-        tiles = new Tile[6];
+        tiles = new ArrayList<>();
     }
 
     public void incScore(int addAmt)
@@ -16,9 +19,9 @@ public class Player {
         score+=addAmt;
     }
 
-    public Tile[] getTiles() {
+    public List<Tile> getTiles() {
         return tiles;
     }
 
-    public void setTiles(Tile[] tiles) { this.tiles = tiles; }
+    public void setTiles(List<Tile> tiles) { this.tiles = tiles; }
 }

@@ -1,9 +1,11 @@
 package com.makkuu.capstoneassignment.models;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.media.Image;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -16,7 +18,7 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
     Shape shape;
 
     public enum Colour { PURPLE, BLUE, GREEN, YELLOW, ORANGE, RED}
-    public enum Shape {club, star, square, diamond, cross, circle}
+    public enum Shape {CLUB, STAR, SQUARE, DIAMOND, CROSS, CIRCLE}
     public enum Direction {ROW,COLUMN}
 
     //TODO: Implement Tile view
@@ -24,7 +26,7 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
     public Tile(Context context, Tile.Colour colour, Tile.Shape shape) {
         super(context);
         setImage(colour,shape);
-
+        setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
     }
     public void setImage(Tile.Colour colour, Tile.Shape shape)
     {
@@ -38,17 +40,19 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
 
     private void setShape()
     {
-        String resourceName = "R.drawable.ic_" + shape.toString();
-        int resourceID = getResources().getIdentifier(resourceName,"drawable",getContext().getPackageName());
-        setImageDrawable(getResources().getDrawable(resourceID,null));
+
+        setImageDrawable(Shapes.getShape(shape));
 
     }
 
     private void setColour()
     {
-        String resourceName = "R.color." + colour.toString();
-        int resourceID = getResources().getIdentifier(resourceName,"color", getContext().getPackageName());
-        setColorFilter(getResources().getColor(resourceID,null));
+        //TODO use Colour class
+        setColorFilter(Colours.getColor(colour));
+//        String resourceName = "R.color." + colour.toString();
+//        int resourceID = getResources().getIdentifier(resourceName,"color", getContext().getPackageName());
+//        setColorFilter(getResources().getColor(resourceID,null));
+        setBackground(getDrawable());
 //        setBackground(getDrawable());
     }
 

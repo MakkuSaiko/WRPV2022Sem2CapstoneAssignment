@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.caverock.androidsvg.SVG;
 import com.makkuu.capstoneassignment.Property;
@@ -17,6 +19,7 @@ import com.makkuu.capstoneassignment.models.Tile;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +34,12 @@ public class Game extends AppCompatActivity {
     Bag bag;
     Board board;
     AlertDialog exitConfirm;
+    int startingTiles;
+
+    List<Tile> selectedTiles = new ArrayList<>();
+
+    //ui elements
+    LinearLayout tiles;
 
     //integer for keeping track of edge of board for adjusting UI
 
@@ -40,6 +49,7 @@ public class Game extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        tiles=findViewById(R.id.tileArea);
         //Set up the initial colours
         Colours colours = Colours.getInstance(this);
 
@@ -50,8 +60,10 @@ public class Game extends AppCompatActivity {
             String[] names = intent.getStringArrayExtra("players");
             for (String name:
                  names) {
+                if(name!=null)
                 players.add(new Player(name));
             }
+            players.forEach(player -> player.setTiles(bag.getTiles(startingTiles)));
             //Shuffle players order
             Collections.shuffle(players);
         }
@@ -62,13 +74,14 @@ public class Game extends AppCompatActivity {
 
     public void setUpGame() {
         //Initialize attributes
-        curPlayer.reset(players.get(0));
+        curPlayer = new Property<>(players.get(0));
 
         bag = new Bag(this);
         board = new Board();
 
         setPropertyListeners();
         initializeExitMessage();
+        setOnClickListeners();
 
     }
 
@@ -78,12 +91,22 @@ public class Game extends AppCompatActivity {
     private void setPropertyListeners()
     {
         playerNr.addListener((property, oldValue, newValue) -> {
-            if(newValue >= players.size()) {playerNr.set(0); return;}
+            if(newValue >= players.size()) {playerNr.reset(0); return;}
             curPlayer.set(players.get(newValue));
             //TODO:ui changes
         });
         //TODO:ui changes
         turnNr.addListener((property, oldValue, newValue) -> playerNr.set(playerNr.get()+1));
+
+        curPlayer.addListener((property, oldValue, newValue) -> {
+            selectedTiles.clear();
+            tiles.removeAllViews();
+            for (Tile tile:
+                 newValue.getTiles()) {
+                tiles.addView(tile);
+                tile.setOnClickListener(view -> selectTile(tile));
+            }
+        });
     }
 
 
@@ -93,17 +116,24 @@ public class Game extends AppCompatActivity {
         board.commit();
     }
 
-    public void move_tradeTiles(int[] removedIndex)
+    public void move_tradeTiles(List<Tile> removedTiles)
     {
         //TODO: Get selected tiles
 
         List<Tile> removed = new ArrayList<Tile>();
-        Tile[] heldTiles = curPlayer.get().getTiles();
-        for (int index:
-             removedIndex) {
-            removed.add(heldTiles[index]);
-            heldTiles[index] = bag.getNextTile();
+        List<Tile> heldTiles = curPlayer.get().getTiles();
+
+        heldTiles.removeAll(removedTiles);
+        removed.addAll(removedTiles);
+        while(heldTiles.size()<6)
+        {
+            try {
+                heldTiles.add(bag.getNextTile());
+            } catch(Exception e) {break; }  //if there is not enough tiles, break loop
         }
+
+
+
         bag.returnTiles(removed);
         board.revertAll();//do not set any moves as valid when trading tiles
         move_endTurn();
@@ -114,6 +144,12 @@ public class Game extends AppCompatActivity {
         board.revertOne();
     }
 
+    //TODO: get from arraylist
+    public void move_placeTile(Board.Coordinate coordinate, Tile tile)
+    {
+        boolean validity = board.doMove(coordinate,tile);
+        if(validity) Toast.makeText(this,getString(R.string.invalidMove),Toast.LENGTH_SHORT).show();
+    }
 
 
 
@@ -131,8 +167,26 @@ public class Game extends AppCompatActivity {
         exitConfirm.show();
     }
 
-    public void move_placeTile(Board.Coordinate coordinate, Tile tile)
+
+
+    private void selectTile(Tile tile)
     {
-        board.doMove(coordinate,tile);
+        if(selectedTiles.contains(tile)) {
+            selectedTiles.remove(tile);
+            tile.setBackgroundColor(getColor(R.color.design_default_color_background));
+        }
+        else {
+            selectedTiles.add(tile);
+            tile.setBackgroundColor(getColor(R.color.selected));
+        }
     }
+
+    private void setOnClickListeners()
+    {
+        findViewById(R.id.btnRevert).setOnClickListener(view -> move_undo());
+        findViewById(R.id.btnCommit).setOnClickListener(view -> { board.commit(); move_endTurn(); });
+        findViewById(R.id.btnTrade).setOnClickListener(view -> move_tradeTiles(selectedTiles));
+
+    }
+
 }

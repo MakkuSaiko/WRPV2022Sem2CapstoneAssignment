@@ -40,6 +40,14 @@ public class Bag {
         return bag.remove(0);
     }
 
+    public List<Tile> getTiles(int nrOfTiles) {
+        List<Tile> tiles = new ArrayList<>();
+        for (int i = 0; i < nrOfTiles; i++) {
+            tiles.add(bag.remove(0));
+        }
+        return tiles;
+    }
+
     public void shuffle()
     {
         Collections.shuffle(bag);
