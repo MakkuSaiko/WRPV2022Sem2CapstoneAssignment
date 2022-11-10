@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.makkuu.capstoneassignment.R;
 
@@ -26,7 +27,8 @@ public class Tile extends androidx.appcompat.widget.AppCompatImageButton
     public Tile(Context context, Tile.Colour colour, Tile.Shape shape) {
         super(context);
         setImage(colour,shape);
-        setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,  LinearLayout.LayoutParams.MATCH_PARENT,1));
+
     }
     public void setImage(Tile.Colour colour, Tile.Shape shape)
     {

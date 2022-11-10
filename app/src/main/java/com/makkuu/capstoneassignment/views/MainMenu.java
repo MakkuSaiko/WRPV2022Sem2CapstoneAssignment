@@ -2,10 +2,12 @@ package com.makkuu.capstoneassignment.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.makkuu.capstoneassignment.R;
+import com.makkuu.capstoneassignment.controllers.Game;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,8 +21,10 @@ public class MainMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         RadioGroup group = findViewById(R.id.radioGroup);
-        RadioButton[] buttons = new RadioButton[]{findViewById(R.id.rbtn2Players),findViewById(R.id.rbtn3Players), findViewById(R.id.rbtn4Players)};
+        buttons = new RadioButton[]{findViewById(R.id.rbtn2Players),findViewById(R.id.rbtn3Players), findViewById(R.id.rbtn4Players)};
         group.setOnCheckedChangeListener((view, other) -> setEditTextVisibility());
+        Button play = findViewById(R.id.btnPlay);
+        play.setOnClickListener(this::startGame);
 
     }
 
@@ -35,11 +39,13 @@ public class MainMenu extends AppCompatActivity {
     private void setPlayer3Visible()
     {
         findViewById(R.id.edtTextPlayer3).setVisibility(View.VISIBLE);
+        findViewById(R.id.edtTextPlayer4).setVisibility(View.INVISIBLE);
     }
     private void setPlayer4Visible()
     {
         setPlayer3Visible();
         findViewById(R.id.edtTextPlayer4).setVisibility(View.VISIBLE);
+
     }
 
     private void setOtherInvisible()
@@ -59,11 +65,11 @@ public class MainMenu extends AppCompatActivity {
             if(editTexts[i].getText().toString().equals("")) playerNames[i] = editTexts[i].getHint().toString();
             else playerNames[i] = editTexts[i].getText().toString();
         }
-        Intent intent = new Intent();
-        intent.setClassName(".controllers","Game");
-        Bundle bundle = new Bundle();
-        bundle.putStringArray("players", playerNames);
-        startActivity(intent,bundle);
+        Intent intent = new Intent(this,Game.class);
+
+        intent.putExtra("players",playerNames);
+
+        startActivity(intent);
 
     }
 

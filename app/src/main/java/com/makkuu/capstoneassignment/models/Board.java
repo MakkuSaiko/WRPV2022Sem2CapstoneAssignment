@@ -173,19 +173,27 @@ public class Board {
         if(row.get(0).getValue().shapeEquals(row.get(1).getValue()))
         {
             placeable = tile.shapeEquals(row.get(0).getValue());
+            //check if colour is already in row
+            placeable = !row.stream().map(entry -> entry.getValue().colour).collect(Collectors.toList()).contains(tile.colour);
         }
         else
         {
             placeable = tile.colourEquals(row.get(0).getValue());
+            //check if shape is in the row
+            placeable = !row.stream().map(entry -> entry.getValue().shape).collect(Collectors.toList()).contains(tile.shape);
         }
 
         if(col.get(0).getValue().shape.equals(col.get(1).getValue().shape))
         {
             placeable = tile.shapeEquals(col.get(0).getValue());
+            //check if colour is already in row
+            placeable = !col.stream().map(entry -> entry.getValue().colour).collect(Collectors.toList()).contains(tile.colour);
         }
         else
         {
             placeable = tile.colourEquals(col.get(0).getValue());
+            //check if shape is in the row
+            placeable = !col.stream().map(entry -> entry.getValue().shape).collect(Collectors.toList()).contains(tile.shape);
         }
 
         if(placeable)
@@ -199,9 +207,11 @@ public class Board {
         return placeable;
     }
 
-    public void commit()
+    public int commit()
     {
+        int score = getScore();
         inputs.clear();
+        return score;
     }
 
     public void revertOne()
@@ -218,4 +228,18 @@ public class Board {
         }
     }
 
+    private int getScore() {
+        int score = 0;
+        Coordinate coord = inputs.peekLast();
+        List<Map.Entry<Coordinate, Tile>> columnConnected = getConnectedTiles(coord.x, coord.y, Tile.Direction.COLUMN);
+        score += columnConnected.size() +1;
+        if(columnConnected.size()==5) score+=6;//Col qwirkle
+        for (Coordinate coordinate:
+             inputs) {
+            List<Map.Entry<Coordinate, Tile>> rowConnected = getConnectedTiles(coordinate.x, coordinate.y, Tile.Direction.ROW);
+            score+=rowConnected.size()+1;
+            if(rowConnected.size()==5) score+=6;
+        }
+        return score;
+    }
 }

@@ -15,6 +15,7 @@ import com.makkuu.capstoneassignment.models.Board;
 import com.makkuu.capstoneassignment.models.Colours;
 import com.makkuu.capstoneassignment.models.Player;
 import com.makkuu.capstoneassignment.R;
+import com.makkuu.capstoneassignment.models.Shapes;
 import com.makkuu.capstoneassignment.models.Tile;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class Game extends AppCompatActivity {
     Bag bag;
     Board board;
     AlertDialog exitConfirm;
-    int startingTiles;
+    int startingTiles = 6;
 
     List<Tile> selectedTiles = new ArrayList<>();
 
@@ -48,6 +49,10 @@ public class Game extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        //initialize colours and shapes
+        Shapes.getInstance(this);
+        Colours.getInstance(this);
 
         tiles=findViewById(R.id.tileArea);
         //Set up the initial colours
@@ -63,7 +68,7 @@ public class Game extends AppCompatActivity {
                 if(name!=null)
                 players.add(new Player(name));
             }
-            players.forEach(player -> player.setTiles(bag.getTiles(startingTiles)));
+
             //Shuffle players order
             Collections.shuffle(players);
         }
@@ -78,11 +83,20 @@ public class Game extends AppCompatActivity {
 
         bag = new Bag(this);
         board = new Board();
+        players.forEach(player -> player.setTiles(bag.getTiles(startingTiles)));
 
+        initializeVariables();
         setPropertyListeners();
         initializeExitMessage();
         setOnClickListeners();
+        playerNr.set(0);
 
+    }
+
+    private void initializeVariables()
+    {
+        playerNr = new Property<>(0);
+        turnNr = new Property<>(0);
     }
 
     /**
@@ -105,6 +119,7 @@ public class Game extends AppCompatActivity {
                  newValue.getTiles()) {
                 tiles.addView(tile);
                 tile.setOnClickListener(view -> selectTile(tile));
+
             }
         });
     }
@@ -112,8 +127,9 @@ public class Game extends AppCompatActivity {
 
     public void move_endTurn()
     {
+        curPlayer.get().incScore(board.commit());
         turnNr.set(turnNr.get()+1);
-        board.commit();
+
     }
 
     public void move_tradeTiles(List<Tile> removedTiles)
@@ -171,6 +187,7 @@ public class Game extends AppCompatActivity {
 
     private void selectTile(Tile tile)
     {
+        tile.setColorFilter(Colours.getColor(Tile.Colour.PURPLE));
         if(selectedTiles.contains(tile)) {
             selectedTiles.remove(tile);
             tile.setBackgroundColor(getColor(R.color.design_default_color_background));

@@ -41,7 +41,7 @@ public class Colours
 
     public static void populateColours(Context context)
     {
-        colours.put(Tile.Colour.RED,context.getColor(R.color.RED));
+        colours.put(Tile.Colour.RED,context.getColor(R.color.BLUE));
         colours.put(Tile.Colour.BLUE,context.getColor(R.color.BLUE));
         colours.put(Tile.Colour.GREEN,context.getColor(R.color.GREEN));
         colours.put(Tile.Colour.ORANGE,context.getColor(R.color.ORANGE));
